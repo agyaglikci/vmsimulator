@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		87DCA5641A435DD400ECDC16 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 87DCA5631A435DD400ECDC16 /* main.cpp */; };
+		87DCA56C1A435EAA00ECDC16 /* process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 87DCA56A1A435EAA00ECDC16 /* process.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,10 @@
 /* Begin PBXFileReference section */
 		87DCA5601A435DD400ECDC16 /* VirtualMemorySimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VirtualMemorySimulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		87DCA5631A435DD400ECDC16 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		87DCA56A1A435EAA00ECDC16 /* process.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = process.cpp; sourceTree = "<group>"; };
+		87DCA56B1A435EAA00ECDC16 /* process.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = process.h; sourceTree = "<group>"; };
+		87DCA56D1A4360F300ECDC16 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		87DCA56E1A43856100ECDC16 /* memoryAccessFile.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = memoryAccessFile.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +63,10 @@
 			isa = PBXGroup;
 			children = (
 				87DCA5631A435DD400ECDC16 /* main.cpp */,
+				87DCA56E1A43856100ECDC16 /* memoryAccessFile.txt */,
+				87DCA56D1A4360F300ECDC16 /* main.h */,
+				87DCA56A1A435EAA00ECDC16 /* process.cpp */,
+				87DCA56B1A435EAA00ECDC16 /* process.h */,
 			);
 			path = VirtualMemorySimulator;
 			sourceTree = "<group>";
@@ -119,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				87DCA5641A435DD400ECDC16 /* main.cpp in Sources */,
+				87DCA56C1A435EAA00ECDC16 /* process.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
