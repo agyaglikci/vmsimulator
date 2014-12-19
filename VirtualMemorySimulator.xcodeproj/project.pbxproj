@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		87DCA5641A435DD400ECDC16 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 87DCA5631A435DD400ECDC16 /* main.cpp */; };
-		87DCA56C1A435EAA00ECDC16 /* process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 87DCA56A1A435EAA00ECDC16 /* process.cpp */; };
+		87DCA5711A43AA5200ECDC16 /* pageTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 87DCA56F1A43AA5200ECDC16 /* pageTable.cpp */; };
+		87DCA5741A43ABE400ECDC16 /* pageTableEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 87DCA5721A43ABE400ECDC16 /* pageTableEntry.cpp */; };
+		87DCA5771A43AD9500ECDC16 /* parameters.h in Sources */ = {isa = PBXBuildFile; fileRef = 87DCA5761A43AD9500ECDC16 /* parameters.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,10 +28,12 @@
 /* Begin PBXFileReference section */
 		87DCA5601A435DD400ECDC16 /* VirtualMemorySimulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VirtualMemorySimulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		87DCA5631A435DD400ECDC16 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		87DCA56A1A435EAA00ECDC16 /* process.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = process.cpp; sourceTree = "<group>"; };
-		87DCA56B1A435EAA00ECDC16 /* process.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = process.h; sourceTree = "<group>"; };
-		87DCA56D1A4360F300ECDC16 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		87DCA56E1A43856100ECDC16 /* memoryAccessFile.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = memoryAccessFile.txt; sourceTree = "<group>"; };
+		87DCA56F1A43AA5200ECDC16 /* pageTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pageTable.cpp; sourceTree = "<group>"; };
+		87DCA5701A43AA5200ECDC16 /* pageTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pageTable.h; sourceTree = "<group>"; };
+		87DCA5721A43ABE400ECDC16 /* pageTableEntry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pageTableEntry.cpp; sourceTree = "<group>"; };
+		87DCA5731A43ABE400ECDC16 /* pageTableEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pageTableEntry.h; sourceTree = "<group>"; };
+		87DCA5761A43AD9500ECDC16 /* parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameters.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,11 +66,13 @@
 		87DCA5621A435DD400ECDC16 /* VirtualMemorySimulator */ = {
 			isa = PBXGroup;
 			children = (
+				87DCA5761A43AD9500ECDC16 /* parameters.h */,
 				87DCA5631A435DD400ECDC16 /* main.cpp */,
+				87DCA56F1A43AA5200ECDC16 /* pageTable.cpp */,
+				87DCA5701A43AA5200ECDC16 /* pageTable.h */,
+				87DCA5721A43ABE400ECDC16 /* pageTableEntry.cpp */,
+				87DCA5731A43ABE400ECDC16 /* pageTableEntry.h */,
 				87DCA56E1A43856100ECDC16 /* memoryAccessFile.txt */,
-				87DCA56D1A4360F300ECDC16 /* main.h */,
-				87DCA56A1A435EAA00ECDC16 /* process.cpp */,
-				87DCA56B1A435EAA00ECDC16 /* process.h */,
 			);
 			path = VirtualMemorySimulator;
 			sourceTree = "<group>";
@@ -127,8 +133,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87DCA5771A43AD9500ECDC16 /* parameters.h in Sources */,
 				87DCA5641A435DD400ECDC16 /* main.cpp in Sources */,
-				87DCA56C1A435EAA00ECDC16 /* process.cpp in Sources */,
+				87DCA5741A43ABE400ECDC16 /* pageTableEntry.cpp in Sources */,
+				87DCA5711A43AA5200ECDC16 /* pageTable.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +250,7 @@
 				87DCA5691A435DD400ECDC16 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
