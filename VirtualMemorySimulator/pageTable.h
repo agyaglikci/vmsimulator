@@ -19,6 +19,7 @@ class PageTable {
     int strategy;
     int numOfMisses = 0;
     int totalFilledEntries = 0;
+    int wsClockPointer = 0;
     PageTableEntry activePageTable[PAGE_TABLE_CAPACITY];
 public:
     PageTable(int);

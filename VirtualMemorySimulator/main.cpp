@@ -10,6 +10,7 @@
 #include <fstream>
 #include <ios>
 
+
 #include "parameters.h"
 #include "pageTable.h"
 
@@ -19,32 +20,39 @@ using namespace std;
 
 //Prototypes
 int generateProcessId (int index);
-void generateLogFile ();
-uint64_t addressTranslation(uint64_t virtualAddress, int processId);
+void generateLogFile();
+void generateLogFileByCutData();
+void generateLogFileByGccTrace();
 
 int main(int argc, const char * argv[]) {
-    //generateLogFile();
+    //generateLogFileByGccTrace();
     
-    PageTable  lruPageTable = PageTable(LRU);
-    //PageTable wsclkPageTable = PageTable(WSCLK);
-    //PageTable fifoPageTable = PageTable(FIFO);
-    cout << "Simulation begins" << endl;
-    
+    PageTable lruPageTable   = PageTable(LRU);
+    PageTable wsclkPageTable = PageTable(WSCLK);
+    PageTable fifoPageTable  = PageTable(FIFO);
+
+    cout << "-- Simulation begins" << endl;
     std::ifstream infile(LOG_FILE_ADDR);
     int processId;
     uint64_t timestamp, virtualAddress;
-    while (infile >> timestamp >> processId >> virtualAddress) {
+    int count;
+    while (infile >> timestamp >> processId >> std::hex >> virtualAddress) {
+        count++;
         // Perform touch operation for different strategies for each line at the log file.
         #ifdef LOG
             cout << timestamp << " " << processId << " " << virtualAddress << endl;
         #endif
         uint64_t virtualPageNumber = virtualAddress >> PAGE_OFFSET_NUM_OF_BITS;
         lruPageTable.touchPage(virtualPageNumber, processId, timestamp);
-        //wsclkPageTable.touchPage(virtualPageNumber, processId, timestamp);
-        //fifoPageTable.touchPage(virtualPageNumber, processId, timestamp);
+        wsclkPageTable.touchPage(virtualPageNumber, processId, timestamp);
+        fifoPageTable.touchPage(virtualPageNumber, processId, timestamp);
     }
-    cout << "Simulation finished" << endl;
-    cout << "Total number of misses for LRU: " << lruPageTable.getNumOfMisses();
+    cout << "-- Simulation finished" << endl;
+    cout << "Total number of operation        : " << count << endl;
+    
+    cout << "Total number of misses for LRU   : " << std::dec << lruPageTable.getNumOfMisses() << endl;
+    cout << "Total number of misses for FIFO  : " << std::dec << fifoPageTable.getNumOfMisses() << endl;
+    cout << "Total number of misses for WSCLK : " << std::dec << wsclkPageTable.getNumOfMisses() << endl;
     return 0;
 }
 
@@ -57,27 +65,52 @@ int generateProcessId (int index){
     }
 }
 
+void memory_trace(){
+    
+}
+
+void generateLogFileByCutData(){
+    std::ifstream infile(CUT_FILE_ADDR);
+    ofstream myFile;
+    myFile.open (LOG_FILE_ADDR);
+    string virtualAddress;
+    int i = 0;
+    while (infile >> virtualAddress) {
+        myFile << std::hex << i << " 1 " << virtualAddress << "000" << endl;
+        i++;
+    }
+    myFile.close();
+}
+
+void generateLogFileByGccTrace(){
+    std::ifstream infile(GCC_TRACE_FILE_ADDR);
+    ofstream myFile;
+    myFile.open (LOG_FILE_ADDR);
+    string first, second, third;
+    while (infile >> first >> second >> third) {
+        myFile << std::hex << third << " " << first << " " << second << endl;
+    }
+    myFile.close();
+}
+
 void generateLogFile(){
     //Multiple Process Memory Access Log Generator
     //Creates random memory access timestamps and virtual addresses for each process.
     //Assume that memory is byte addressable. Max address value: 0x7fffffff
-    cout << std::hex << RAND_MAX << endl;
-    cout << "Memory Access Logs are being generated" << endl;
+    cout << "-- Memory Access Logs are being generated" << endl;
     ofstream myFile;
     myFile.open (LOG_FILE_ADDR);
-    for (int a = 0; a < NUM_OF_ACCESSES_PEPROCESS ; a++) {
+    for (int a = 0; a < NUM_OF_ACCESSES_PERPROCESS ; a++) {
         for (int p=1; p <= NUM_OF_PROCESSES; p++) {
             int processId = generateProcessId(p);
             uint64_t timestamp = a * NUM_OF_PROCESSES + p;
-            uint64_t virtualAddr = rand() / 2048;
-            myFile << std::hex << timestamp << " " << processId << " " << virtualAddr << endl;
+            uint64_t virtualAddr = rand()%(2^22);  // Random
+            //uint64_t virtualAddr = (timestamp % PAGE_TABLE_CAPACITY) << PAGE_OFFSET_NUM_OF_BITS; // FIFO Friendly
+            //uint64_t virtualAddr = (timestamp % (PAGE_TABLE_CAPACITY / 3)) << PAGE_OFFSET_NUM_OF_BITS; // FIFO Friendly
+            myFile << timestamp << " " << processId << " " << virtualAddr << endl;
         }
     }
     myFile.close();
-    cout << "Memory Access Log File was generated successfully"<<endl;
+    cout << "-- Memory Access Log File was generated successfully"<<endl;
 }
 
-uint64_t addressTranslation(uint64_t virtualAddress, int processId){
-    //Assume that physical addresses always starts with process id in left most 4 digits.
-    return virtualAddress + processId * 0x800000;
-}

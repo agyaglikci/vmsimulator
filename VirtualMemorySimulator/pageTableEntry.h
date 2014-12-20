@@ -14,9 +14,10 @@
 #include "parameters.h"
 
 class PageTableEntry {
-    uint64_t virtualPageNum, lastAccessTime;
+    uint64_t virtualPageNum, lastAccessTime, entryTime;
     int numOfHits, processId;
     bool valid = false;
+    bool touched = false;
     
 public:
     PageTableEntry();
@@ -25,13 +26,16 @@ public:
     
     int getNumOfHits();
     int getNumOfMisses();
-    uint64_t getTimeStamp ();
+    uint64_t getLastAccessTime ();
+    uint64_t getEntryTime ();
     
     bool isIdentical(uint64_t virtualPageNum, int processId);
     bool isValid();
+    bool isTouched();
     
     void evictAndSet(uint64_t virtualPageNum, int processId, uint64_t current);
-    void setTimeStamp (uint64_t timeStamp);
+    void updateLastAccessTime (uint64_t timeStamp);
+    void clearTouched();
     
 };
 

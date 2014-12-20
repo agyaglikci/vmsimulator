@@ -28,7 +28,7 @@ void PageTable::touchPage(uint64_t virtualPageNum, int processId, uint64_t curre
         }
     }
     else {
-        this->activePageTable[entryIndex].setTimeStamp(current);
+        this->activePageTable[entryIndex].updateLastAccessTime(current);
         this->activePageTable[entryIndex].incHit();
     }
 }
@@ -48,7 +48,21 @@ int PageTable::selectEvictPage(uint64_t current){
             uint64_t minTimestamp = current;
             int minIndex = 0;
             for (int i = 0 ; i < PAGE_TABLE_CAPACITY; i++) {
-                uint64_t tempTimeStamp = activePageTable[i].getTimeStamp();
+                uint64_t tempTimeStamp = activePageTable[i].getLastAccessTime();
+                if ( tempTimeStamp < minTimestamp ){
+                    minTimestamp = tempTimeStamp;
+                    minIndex = i ;
+                }
+            }
+            return minIndex;
+            break;
+        }
+            
+        case FIFO:{
+            uint64_t minTimestamp = current;
+            int minIndex = 0;
+            for (int i = 0 ; i < PAGE_TABLE_CAPACITY; i++) {
+                uint64_t tempTimeStamp = activePageTable[i].getEntryTime();
                 if ( tempTimeStamp < minTimestamp ){
                     minTimestamp = tempTimeStamp;
                     minIndex = i ;
@@ -59,16 +73,23 @@ int PageTable::selectEvictPage(uint64_t current){
         }
           
         case WSCLK:{
-            uint64_t minTimestamp = 0;
-            int minIndex = 0;
-            for (int i = 0 ; i < PAGE_TABLE_CAPACITY; i++) {
-                uint64_t tempTimeStamp = activePageTable[i].getTimeStamp();
-                if ( tempTimeStamp < minTimestamp ){
-                    minTimestamp = tempTimeStamp;
-                    minIndex = i ;
+            bool victimSelected = false;
+            while (!victimSelected) {
+                if (current - activePageTable[wsClockPointer].getLastAccessTime() >= TAO) {
+                    if (activePageTable[wsClockPointer].isTouched()) {
+                        activePageTable[wsClockPointer].clearTouched();
+                        wsClockPointer = ( wsClockPointer + 1 ) % PAGE_TABLE_CAPACITY;
+                    }
+                    else {
+                        victimSelected = true;
+                    }
+                }
+                else {
+                    wsClockPointer = ( wsClockPointer + 1 ) % PAGE_TABLE_CAPACITY;
                 }
             }
-            return minIndex;
+            return wsClockPointer;
+            
             break;
         }
             
@@ -77,7 +98,6 @@ int PageTable::selectEvictPage(uint64_t current){
             break;
         }
     }
-    return 0;
 }
 int  PageTable::insertPageEntry(uint64_t virtualPageNum, int processId, uint64_t current){
     for (int i = 0; i < PAGE_TABLE_CAPACITY; i++) {
